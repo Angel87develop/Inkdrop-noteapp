@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Settings, defaultSettings } from '../types/settings'
 
-const SETTINGS_KEY = 'inkdrop-settings'
+const SETTINGS_KEY = 'noteforge-settings'
 
 export const loadSettings = (): Settings => {
   try {

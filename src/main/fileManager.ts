@@ -20,30 +20,30 @@ export function getDocumentsPath(): string {
 }
 
 /**
- * Obtiene la ruta de la carpeta inkdrop-notes
+ * Obtiene la ruta de la carpeta noteforge-notes
  */
-export function getInkdropNotesPath(): string {
+export function getNoteForgeNotesPath(): string {
   const documentsPath = getDocumentsPath()
-  return join(documentsPath, 'inkdrop-notes')
+  return join(documentsPath, 'noteforge-notes')
 }
 
 /**
- * Asegura que la carpeta inkdrop-notes existe, creándola si es necesario
+ * Asegura que la carpeta noteforge-notes existe, creándola si es necesario
  */
-export function ensureInkdropNotesFolder(): string {
-  const inkdropPath = getInkdropNotesPath()
+export function ensureNoteForgeNotesFolder(): string {
+  const noteForgePath = getNoteForgeNotesPath()
   try {
-    if (!existsSync(inkdropPath)) {
-      mkdirSync(inkdropPath, { recursive: true })
-      console.log('Carpeta inkdrop-notes creada en:', inkdropPath)
+    if (!existsSync(noteForgePath)) {
+      mkdirSync(noteForgePath, { recursive: true })
+      console.log('Carpeta noteforge-notes creada en:', noteForgePath)
     } else {
-      console.log('Carpeta inkdrop-notes ya existe en:', inkdropPath)
+      console.log('Carpeta noteforge-notes ya existe en:', noteForgePath)
     }
   } catch (error) {
-    console.error('Error al crear carpeta inkdrop-notes:', error)
+    console.error('Error al crear carpeta noteforge-notes:', error)
     throw error
   }
-  return inkdropPath
+  return noteForgePath
 }
 
 /**
@@ -61,13 +61,13 @@ export function sanitizeFileName(fileName: string): string {
 /**
  * Busca un archivo existente por ID de nota
  */
-function findExistingNoteFile(noteId: string, inkdropPath: string): string | null {
+function findExistingNoteFile(noteId: string, noteForgePath: string): string | null {
   try {
     // Buscar en la carpeta raíz
-    if (existsSync(inkdropPath)) {
-      const files = readdirSync(inkdropPath)
+    if (existsSync(noteForgePath)) {
+      const files = readdirSync(noteForgePath)
       for (const file of files) {
-        const filePath = join(inkdropPath, file)
+        const filePath = join(noteForgePath, file)
         const stats = statSync(filePath)
         if (stats.isFile() && file.endsWith('.md') && file.includes(`_${noteId}.md`)) {
           return filePath
@@ -76,10 +76,10 @@ function findExistingNoteFile(noteId: string, inkdropPath: string): string | nul
     }
 
     // Buscar en subcarpetas (notebooks)
-    if (existsSync(inkdropPath)) {
-      const items = readdirSync(inkdropPath)
+    if (existsSync(noteForgePath)) {
+      const items = readdirSync(noteForgePath)
       for (const item of items) {
-        const itemPath = join(inkdropPath, item)
+        const itemPath = join(noteForgePath, item)
         const stats = statSync(itemPath)
         if (stats.isDirectory()) {
           const files = readdirSync(itemPath)
@@ -104,11 +104,11 @@ function findExistingNoteFile(noteId: string, inkdropPath: string): string | nul
 export function saveNoteToFile(noteId: string, title: string, content: string, notebookId?: string): string {
   try {
     // Asegurar que la carpeta existe
-    const inkdropPath = ensureInkdropNotesFolder()
-    console.log('Guardando nota en:', inkdropPath)
+    const noteForgePath = ensureNoteForgeNotesFolder()
+    console.log('Guardando nota en:', noteForgePath)
     
     // Buscar archivo existente por ID
-    const existingFile = findExistingNoteFile(noteId, inkdropPath)
+    const existingFile = findExistingNoteFile(noteId, noteForgePath)
     if (existingFile) {
       console.log('Archivo existente encontrado:', existingFile)
       // Si existe, actualizar el contenido
@@ -116,8 +116,8 @@ export function saveNoteToFile(noteId: string, title: string, content: string, n
       
       // Si el notebook cambió o el título cambió, mover/renombrar el archivo
       const targetNotebookPath = notebookId 
-        ? join(inkdropPath, sanitizeFileName(notebookId))
-        : inkdropPath
+        ? join(noteForgePath, sanitizeFileName(notebookId))
+        : noteForgePath
       
       if (!existsSync(targetNotebookPath)) {
         mkdirSync(targetNotebookPath, { recursive: true })
@@ -141,9 +141,9 @@ export function saveNoteToFile(noteId: string, title: string, content: string, n
     }
     
     // Si no existe, crear nuevo archivo
-    let targetPath = inkdropPath
+    let targetPath = noteForgePath
     if (notebookId) {
-      const notebookPath = join(inkdropPath, sanitizeFileName(notebookId))
+      const notebookPath = join(noteForgePath, sanitizeFileName(notebookId))
       if (!existsSync(notebookPath)) {
         mkdirSync(notebookPath, { recursive: true })
         console.log('Carpeta de notebook creada:', notebookPath)
@@ -172,15 +172,15 @@ export function saveNoteToFile(noteId: string, title: string, content: string, n
  */
 export function deleteNoteFile(noteId: string, title: string, notebookId?: string): boolean {
   try {
-    const inkdropPath = getInkdropNotesPath()
+    const noteForgePath = getNoteForgeNotesPath()
     
-    if (!existsSync(inkdropPath)) {
+    if (!existsSync(noteForgePath)) {
       return false
     }
 
-    let targetPath = inkdropPath
+    let targetPath = noteForgePath
     if (notebookId) {
-      targetPath = join(inkdropPath, sanitizeFileName(notebookId))
+      targetPath = join(noteForgePath, sanitizeFileName(notebookId))
     }
 
     const safeTitle = sanitizeFileName(title) || 'Untitled_Note'
@@ -216,7 +216,7 @@ export function readNoteFile(filePath: string): string | null {
 
 export function deleteNotebookFolder(notebookId: string): boolean {
   try {
-    const base = getInkdropNotesPath()
+    const base = getNoteForgeNotesPath()
     const sanitizedId = sanitizeFileName(notebookId)
     const folder = join(base, sanitizedId)
     if (existsSync(folder)) {
@@ -240,7 +240,7 @@ export function deleteNotebookFolder(notebookId: string): boolean {
  * Obtiene la ruta del archivo de metadatos de notebooks
  */
 function getNotebooksMetadataPath(): string {
-  return join(getInkdropNotesPath(), 'notebooks.json')
+  return join(getNoteForgeNotesPath(), 'notebooks.json')
 }
 
 /**
@@ -264,7 +264,7 @@ function loadNotebooksMetadata(): Record<string, string> {
  */
 function saveNotebooksMetadata(metadata: Record<string, string>): void {
   try {
-    ensureInkdropNotesFolder()
+    ensureNoteForgeNotesFolder()
     const metadataPath = getNotebooksMetadataPath()
     writeFileSync(metadataPath, JSON.stringify(metadata, null, 2), 'utf-8')
   } catch (error) {
@@ -273,13 +273,13 @@ function saveNotebooksMetadata(metadata: Record<string, string>): void {
 }
 
 /**
- * Crea una carpeta para un notebook dentro de inkdrop-notes
+ * Crea una carpeta para un notebook dentro de noteforge-notes
  */
 export function createNotebookFolder(notebookId: string, notebookName: string): string {
   try {
-    const inkdropPath = ensureInkdropNotesFolder()
+    const noteForgePath = ensureNoteForgeNotesFolder()
     const sanitizedId = sanitizeFileName(notebookId)
-    const notebookPath = join(inkdropPath, sanitizedId)
+    const notebookPath = join(noteForgePath, sanitizedId)
     
     if (!existsSync(notebookPath)) {
       mkdirSync(notebookPath, { recursive: true })
@@ -301,21 +301,21 @@ export function createNotebookFolder(notebookId: string, notebookName: string): 
 }
 
 /**
- * Carga todos los notebooks desde las carpetas en inkdrop-notes
+ * Carga todos los notebooks desde las carpetas en noteforge-notes
  */
 export function loadNotebooksFromFilesystem(): Array<{ id: string; name: string }> {
   try {
-    const inkdropPath = getInkdropNotesPath()
-    if (!existsSync(inkdropPath)) {
+    const noteForgePath = getNoteForgeNotesPath()
+    if (!existsSync(noteForgePath)) {
       return []
     }
 
     const metadata = loadNotebooksMetadata()
     const notebooks: Array<{ id: string; name: string }> = []
-    const items = readdirSync(inkdropPath)
+    const items = readdirSync(noteForgePath)
     
     for (const item of items) {
-      const itemPath = join(inkdropPath, item)
+      const itemPath = join(noteForgePath, item)
       const stats = statSync(itemPath)
       
       // Ignorar el archivo de metadatos
@@ -342,7 +342,7 @@ export function loadNotebooksFromFilesystem(): Array<{ id: string; name: string 
 }
 
 /**
- * Carga todas las notas desde los archivos .md en inkdrop-notes
+ * Carga todas las notas desde los archivos .md en noteforge-notes
  */
 export function loadNotesFromFilesystem(): Array<{
   id: string
@@ -353,8 +353,8 @@ export function loadNotesFromFilesystem(): Array<{
   updatedAt: string
 }> {
   try {
-    const inkdropPath = getInkdropNotesPath()
-    if (!existsSync(inkdropPath)) {
+    const noteForgePath = getNoteForgeNotesPath()
+    if (!existsSync(noteForgePath)) {
       return []
     }
 
@@ -408,7 +408,7 @@ export function loadNotesFromFilesystem(): Array<{
     }
 
     // Procesar carpeta raíz (notas sin notebook)
-    processFolder(inkdropPath)
+    processFolder(noteForgePath)
     
     return notes
   } catch (error) {
@@ -456,7 +456,7 @@ export function createWelcomeNoteIfNewUser(): void {
     
     // Crear ID único para la nota de bienvenida
     const noteId = Date.now().toString()
-    const title = 'Welcome to Inkdrop'
+    const title = 'Welcome to NoteForge'
     
     // Guardar la nota de bienvenida
     saveNoteToFile(noteId, title, welcomeContent)

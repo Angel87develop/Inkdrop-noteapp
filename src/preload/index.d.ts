@@ -12,7 +12,7 @@ export interface FileManagerAPI {
     title: string,
     notebookId?: string
   ) => Promise<{ success: boolean; error?: string }>
-  getInkdropNotesPath: () => Promise<{ success: boolean; path?: string; error?: string }>
+  getNoteForgeNotesPath: () => Promise<{ success: boolean; path?: string; error?: string }>
   deleteNotebookFolder: (notebookId: string) => Promise<{ success: boolean; error?: string }>
   createNotebookFolder: (
     notebookId: string,

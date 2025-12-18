@@ -3,7 +3,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { getInkdropNotesPath, ensureInkdropNotesFolder, createNotebookFolder, loadNotebooksFromFilesystem, loadNotesFromFilesystem, createWelcomeNoteIfNewUser } from './fileManager'
+import { getNoteForgeNotesPath, ensureNoteForgeNotesFolder, createNotebookFolder, loadNotebooksFromFilesystem, loadNotesFromFilesystem, createWelcomeNoteIfNewUser } from './fileManager'
 import { saveMarkdown, deleteMarkdown, deleteNotebookFolderSafe } from './mdStorage'
 
 function createWindow(): void {
@@ -76,9 +76,9 @@ app.whenReady().then(() => {
     }
   })
 
-  ipcMain.handle('get-inkdrop-notes-path', async () => {
+  ipcMain.handle('get-noteforge-notes-path', async () => {
     try {
-      const path = getInkdropNotesPath()
+      const path = getNoteForgeNotesPath()
       return { success: true, path }
     } catch (error) {
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
@@ -127,7 +127,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('open-data-folder', async () => {
     try {
-      const path = getInkdropNotesPath()
+      const path = getNoteForgeNotesPath()
       shell.showItemInFolder(path)
       return { success: true }
     } catch (error) {
@@ -137,7 +137,7 @@ app.whenReady().then(() => {
   })
 
   // Asegurar que la carpeta existe al iniciar
-  ensureInkdropNotesFolder()
+  ensureNoteForgeNotesFolder()
 
   // Create note de bienvenida si el usuario es nuevo
   createWelcomeNoteIfNewUser()

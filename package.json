@@ -1,5 +1,5 @@
 {
-  "name": "inkdrop",
+  "name": "noteforge",
   "version": "1.0.0",
   "description": "A Markdown notes desktop application built with Electron, React, and Tailwind CSS 4.1",
   "main": "./out/main/index.js",

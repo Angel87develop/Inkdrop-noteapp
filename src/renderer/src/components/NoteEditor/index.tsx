@@ -412,67 +412,67 @@ export default function NoteEditor({
             </div>
           </div>
         )}
-
-        {/* View Mode Toggle (cambia el modo global de vista) */}
-        <button
-          onClick={() => {
-            if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current)
-            handleSave()
-
-            const currentView = settings.editor.behavior.view
-            let nextView: typeof currentView
-
-            // Ciclo sencillo: editor-only -> editor-preview -> preview-only -> editor-only
-            if (currentView === 'editor-only') {
-              nextView = 'editor-preview'
-            } else if (currentView === 'editor-preview') {
-              nextView = 'preview-only'
-            } else {
-              nextView = 'editor-only'
-            }
-
-            updateEditorBehavior({ view: nextView })
-          }}
-          className="absolute bottom-6 right-6 w-12 h-12 rounded-xl bg-ink-700 hover:bg-ink-600 border border-ink-600 flex items-center justify-center text-text-muted hover:text-amber transition-all shadow-lg hover:shadow-glow z-10 group"
-          title={
-            settings.editor.behavior.view === 'editor-only'
-              ? 'Editor + live preview'
-              : settings.editor.behavior.view === 'editor-preview'
-                ? 'Preview only'
-                : 'Editor only'
-          }
-        >
-          {settings.editor.behavior.view === 'preview-only' ? (
-            // Icono de modo edición
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="group-hover:scale-110 transition-transform"
-            >
-              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-          ) : (
-            // Icono de ojo (modo preview / mixto)
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="group-hover:scale-110 transition-transform"
-            >
-              <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
-              <path
-                d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-            </svg>
-          )}
-        </button>
       </div>
+
+      {/* View Mode Toggle (cambia el modo global de vista) */}
+      <button
+        onClick={() => {
+          if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current)
+          handleSave()
+
+          const currentView = settings.editor.behavior.view
+          let nextView: typeof currentView
+
+          // Ciclo sencillo: editor-only -> editor-preview -> preview-only -> editor-only
+          if (currentView === 'editor-only') {
+            nextView = 'editor-preview'
+          } else if (currentView === 'editor-preview') {
+            nextView = 'preview-only'
+          } else {
+            nextView = 'editor-only'
+          }
+
+          updateEditorBehavior({ view: nextView })
+        }}
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-xl bg-ink-700 hover:bg-ink-600 border border-ink-600 flex items-center justify-center text-text-muted hover:text-amber transition-all shadow-lg hover:shadow-glow z-50 group"
+        title={
+          settings.editor.behavior.view === 'editor-only'
+            ? 'Editor + live preview'
+            : settings.editor.behavior.view === 'editor-preview'
+              ? 'Preview only'
+              : 'Editor only'
+        }
+      >
+        {settings.editor.behavior.view === 'preview-only' ? (
+          // Icono de modo edición
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="group-hover:scale-110 transition-transform"
+          >
+            <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+        ) : (
+          // Icono de ojo (modo preview / mixto)
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            className="group-hover:scale-110 transition-transform"
+          >
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
+            <path
+              d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+          </svg>
+        )}
+      </button>
     </div>
   )
 }

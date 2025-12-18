@@ -7,7 +7,7 @@ const api = {
     electronAPI.ipcRenderer.invoke('save-note-to-file', noteId, title, content, notebookId),
   deleteNoteFile: (noteId: string, title: string, notebookId?: string) =>
     electronAPI.ipcRenderer.invoke('delete-note-file', noteId, title, notebookId),
-  getInkdropNotesPath: () => electronAPI.ipcRenderer.invoke('get-inkdrop-notes-path'),
+  getNoteForgeNotesPath: () => electronAPI.ipcRenderer.invoke('get-noteforge-notes-path'),
   deleteNotebookFolder: (notebookId: string) =>
     electronAPI.ipcRenderer.invoke('delete-notebook-folder', notebookId),
   createNotebookFolder: (notebookId: string, notebookName: string) =>

@@ -20,7 +20,7 @@ export default function AboutSettings(): React.ReactElement {
 
   const handleReportBug = (): void => {
     // Open bug report URL
-    window.open('https://github.com/Angel87develop/Inkdrop-noteapp/issues', '_blank')
+    window.open('https://github.com/Angel87develop/NoteForge-noteapp/issues', '_blank')
   }
 
   const handleResetSettings = (): void => {

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { join } from 'path'
 import { existsSync, mkdirSync, writeFileSync, unlinkSync, readdirSync, statSync, rmSync } from 'fs'
-import { ensureInkdropNotesFolder, getInkdropNotesPath, sanitizeFileName } from './fileManager'
+import { ensureNoteForgeNotesFolder, getNoteForgeNotesPath, sanitizeFileName } from './fileManager'
 
 function findNoteFile(noteId: string, basePath: string): string | null {
   try {
@@ -32,7 +32,7 @@ function findNoteFile(noteId: string, basePath: string): string | null {
 }
 
 export function saveMarkdown(noteId: string, title: string, content: string, notebookId?: string): string {
-  const base = ensureInkdropNotesFolder()
+  const base = ensureNoteForgeNotesFolder()
   const existing = findNoteFile(noteId, base)
   const targetFolder = notebookId ? join(base, sanitizeFileName(notebookId)) : base
   if (!existsSync(targetFolder)) mkdirSync(targetFolder, { recursive: true })
@@ -50,7 +50,7 @@ export function saveMarkdown(noteId: string, title: string, content: string, not
 
 export function deleteMarkdown(noteId: string, title: string, notebookId?: string): boolean {
   try {
-    const base = getInkdropNotesPath()
+    const base = getNoteForgeNotesPath()
     let target = base
     if (notebookId) target = join(base, sanitizeFileName(notebookId))
     const safeTitle = sanitizeFileName(title) || 'Untitled_Note'
@@ -68,7 +68,7 @@ export function deleteMarkdown(noteId: string, title: string, notebookId?: strin
 
 export function deleteNotebookFolderSafe(notebookId: string): boolean {
   try {
-    const base = getInkdropNotesPath()
+    const base = getNoteForgeNotesPath()
     const folder = join(base, sanitizeFileName(notebookId))
     if (existsSync(folder)) {
       rmSync(folder, { recursive: true, force: true })

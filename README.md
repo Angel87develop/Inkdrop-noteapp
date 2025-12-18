@@ -1,14 +1,14 @@
 # Inkdrop
 
-![all-app](https://files.catbox.moe/kc3b47.png)
-![settings](https://files.catbox.moe/i55yf1.png)
+![all-app](https://files.catbox.moe/86qd4y.png)
+![settings](https://files.catbox.moe/d30z6j.png)
 
 ## Math support for your class!
-![math](https://files.catbox.moe/ae7kg0.png)
+![math]([https://files.catbox.moe/ae7kg0.png](https://files.catbox.moe/h4lm0o.png))
 
 A beautiful, feature-rich Markdown note-taking desktop application built with Electron, React, and Tailwind CSS 4.1.
 
-![Inkdrop](https://img.shields.io/badge/version-1.0.0-blue)
+![NoteForge](https://img.shields.io/badge/version-1.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 

@@ -283,7 +283,7 @@ export default function Sidebar({
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-serif font-semibold text-text-primary tracking-tight">
-              <span className="text-gradient">Inkdrop</span>
+              <span className="text-gradient">NoteForge</span>
             </h1>
             <p className="text-xs text-text-muted mt-1">Your thoughts, beautifully organized</p>
           </div>

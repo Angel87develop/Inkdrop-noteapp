@@ -165,7 +165,7 @@ export const defaultSettings: Settings = {
     }
   },
   about: {
-    appName: 'Inkdrop',
+    appName: 'NoteForge',
     version: '1.0.0',
     changelog: 'Initial release',
     license: 'MIT'
